@@ -38,7 +38,7 @@ class Minesweeper:
         self.mines = 0
         x_coord = 1
         y_coord = 0
-        for x in range(0, 100):
+        for x in range(1, 101):
             mine = 0
             # tile image changeable for debug reasons:
             gfx = self.tile_plain
