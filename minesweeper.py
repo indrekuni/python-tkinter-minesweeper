@@ -74,22 +74,38 @@ class Minesweeper:
         # find nearby mines and display number on tile
         for key in self.buttons:
             nearby_mines = 0
-            if self.check_for_mines(key-9):
+            if self.check_for_mines(key-9) and key%10!=0:
                 nearby_mines += 1
             if self.check_for_mines(key-10):
                 nearby_mines += 1
-            if self.check_for_mines(key-11):
+            if self.check_for_mines(key-11) and key%10==0:
                 nearby_mines += 1
-            if self.check_for_mines(key-1):
+            if self.check_for_mines(key-11) and key%10>1:
                 nearby_mines += 1
-            if self.check_for_mines(key+1):
+            if self.check_for_mines(key-1) and key%10==0:
                 nearby_mines += 1
-            if self.check_for_mines(key+9):
+            if self.check_for_mines(key-1) and key%10>1:
+                nearby_mines += 1
+            if self.check_for_mines(key+1) and key%10>0:
+                nearby_mines += 1
+            if self.check_for_mines(key+9) and key%10==0:
+                nearby_mines += 1
+            if self.check_for_mines(key+9) and key%10>1:
                 nearby_mines += 1
             if self.check_for_mines(key+10):
                 nearby_mines += 1
-            if self.check_for_mines(key+11):
+            if self.check_for_mines(key+11) and key%10>0:
                 nearby_mines += 1
+                
+            # uncomment next 6 lines to enable generated minefield print
+                
+            #if key%10==0:    
+            #    if self.buttons[key][1] == 1: print("x")
+            #    else: print (nearby_mines)
+            #else:
+            #    if self.buttons[key][1] == 1: print("x", end = " ")
+            #    else: print (nearby_mines, end = " ")
+            
             # store mine count in button data list
             self.buttons[key][5] = nearby_mines
             #if self.buttons[key][1] != 1:
@@ -182,14 +198,17 @@ class Minesweeper:
 
         while len(queue) != 0:
             key = queue.popleft()
-            self.check_tile(key-9, queue)      #top right
+            if key%10!=0: self.check_tile(key-9, queue)      #top right
             self.check_tile(key-10, queue)     #top middle
-            self.check_tile(key-11, queue)     #top left
-            self.check_tile(key-1, queue)      #left
-            self.check_tile(key+1, queue)      #right
-            self.check_tile(key+9, queue)      #bottom right
+            if key%10>1: self.check_tile(key-11, queue)     #top left
+            if key%10==0: self.check_tile(key-11, queue)     #top left
+            if key%10==0: self.check_tile(key-1, queue)      #left
+            if key%10>1: self.check_tile(key-1, queue)      #left
+            if key%10>0: self.check_tile(key+1, queue)      #right
+            if key%10==0: self.check_tile(key+9, queue)      #bottom right
+            if key%10>1: self.check_tile(key+9, queue)      #bottom right
             self.check_tile(key+10, queue)     #bottom middle
-            self.check_tile(key+11, queue)     #bottom left
+            if key%10>0: self.check_tile(key+11, queue)     #bottom left
     
     def gameover(self):
         tkMessageBox.showinfo("Game Over", "You Lose!")
